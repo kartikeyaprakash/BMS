@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: webapp-service
+  thymeleaf:
+    cache: false
+    enabled: true 
+    prefix: classpath:/templates/
+    suffix: .html    
+       
+server:
+  port: 9050  
+  error:
+    path: /error
+     
+movie-service:
+  url: http://localhost:9002/api/v1/movie    
+
+  

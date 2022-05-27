@@ -1,0 +1,58 @@
+server:
+  port: 9002
+  ssl:
+    enabled: true
+    client-auth: need
+    key-store: classpath:movie-service.jks
+    key-store-password: changeit
+    key-alias: movie-service
+    key-store-type: JKS
+    key-store-provider: SUN
+    trust-store: classpath:movie-service.jks
+    trust-store-password: changeit
+    trust-store-type: JKS  
+  
+spring:
+  profiles:
+    active: prod
+  application:
+    name: movie-service
+  data:
+    dynamodb:
+      entity2ddl:
+        auto: create-only
+
+management:
+  web:
+    exposure:
+      include: health,info,mappings,metrics
+  security:
+    enabled: false
+  
+logging:
+  level:
+    com:
+      cg:
+        challenge4:
+          movieservice: DEBUG    
+      springframework:
+        web: INFO
+        data: ERROR 
+    net:
+      guides: DEBUG
+        
+movie-service:
+  path: ${MOVIE_SERVICE_PATH:/api/v1/movie}
+  
+---
+
+spring:
+  profiles: dev
+  
+amazon:
+  dynamodb: 
+    endpoint: http://localhost:8000/   
+
+
+
+  

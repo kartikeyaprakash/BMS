@@ -1,0 +1,99 @@
+spring:
+  application:
+    name: webapp-service
+  thymeleaf:
+    cache: false
+    enabled: true 
+    prefix: classpath:/templates/
+    suffix: .html 
+  profiles:
+   active: prod
+    
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/${USER_POOL_ID}
+      client:
+        registration:
+          cognito:
+            clientId: ${CLIENT_ID}
+            #clientSecret: pds37fq7s4cod4c45vcmbij9k1o8drhfvptbqb8h2g04fa8hhrt
+            scope: openid, email, phone, aws.cognito.signin.user.admin, profile
+            redirect-uri: http://localhost:9050/login/oauth2/code/cognito
+            clientName: ${CLIENT_NAME}
+        provider:
+          cognito:            
+            issuerUri: https://cognito-idp.us-east-1.amazonaws.com/${USER_POOL_ID}
+             
+            #format for issuerURI: https://cognito-idp.<AWS-Region>.amazonaws.com/<pool-id>
+
+security:
+  oauth2:
+   resource:
+    userInfoUri: ${DOMAIN_NAME}/oauth2/userInfo
+    tokenInfoUri: ${DOMAIN_NAME}/oauth2/token
+    jwk:
+     key-set-uri: https://cognito-idp.us-east-1.amazonaws.com/${USER_POOL_ID}/.well-known/jwks.json
+   client:
+    clientId: ${CLIENT_ID}
+    
+    
+
+aws:
+  access-key: ${ACCESS_KEY_ID}
+  access-secret: ${ACCESS_SECRET_ACCESS_KEY}
+  cognito: 
+   userPoolId: ${USER_POOL_ID}
+   clientId: ${CLIENT_ID}
+   region: us-east-1
+   connectionTimeout: 2000
+   readTimeout: 2000
+   jwk: https://cognito-idp.us-east-1.amazonaws.com/${USER_POOL_ID}/.well-known/jwks.json
+  default-region: us-east-1
+
+  
+logging:
+  level:
+   com:
+    cg:
+     challenge4:
+      webapp: INFO
+    org: 
+      springframework:
+        security:
+          web:
+            FilterChainProxy: 
+              DEBUG
+  
+          
+server:
+  port: 9050
+  ssl:
+    enabled: true
+    client-auth: need
+    key-store: classpath:webapp.jks
+    key-store-password: changeit
+    key-alias: webapp
+    key-store-type: JKS
+    key-store-provider: SUN
+    trust-store: classpath:webapp.jks
+    trust-store-password: changeit
+    trust-store-type: JKS  
+  error:
+    path: /error
+     
+movie-service:
+  url: ${MOVIE_SERVICE_URL:https://localhost:9002/api/v1/movie}  
+  
+city-service:  
+  url: ${CITY_SERVICE_URL:https://localhost:6666}
+  
+booking-service:
+  url: ${BOOKING_SERVICE_URL:https://localhost:2222} 
+theatre-service:
+  url: ${THEATRE_SERVICE_URL:https://localhost:6667}
+  
+  
+
+  
